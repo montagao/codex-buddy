@@ -5,6 +5,8 @@
 
 Codex Buddy is a Chrome extension that collects every “Version” tab on a ChatGPT Codex review page, composes a markdown summary, and hands it off to ChatGPT’s gpt-5-pro or gpt-5-thinking models with one click.
 
+![Codex Buddy overlay](./screenshot.png)
+
 https://github.com/codex-helper/codex-helper/assets/demo.gif
 
 ## Features
