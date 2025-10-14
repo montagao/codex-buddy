@@ -27,6 +27,10 @@ chrome.action.onClicked.addListener(async (tab) => {
     return;
   }
 
+  if (typeof tab.id === 'number') {
+    lastCodexTabId = tab.id;
+  }
+
   try {
     const brandIcon = chrome.runtime.getURL('assets/brand-mark.svg');
     await showResultsPopup('', brandIcon, tab.id, true, 'Fetching Codex versions and metadata…');
@@ -62,12 +66,6 @@ chrome.action.onClicked.addListener(async (tab) => {
     } catch (overlayError) {
       console.warn('Unable to update overlay with error state:', overlayError);
     }
-    chrome.notifications.create({
-      type: 'basic',
-      iconUrl: '/icon.png',
-      title: 'Error',
-      message: 'Failed to collect PR information. Check console for details.',
-    });
   }
 });
 
@@ -876,13 +874,6 @@ async function showInformationalOverlay(tabId) {
     });
   } catch (err) {
     console.warn('Unable to inject informational overlay:', err);
-    chrome.notifications.create({
-      type: 'basic',
-      iconUrl: '/icon.png',
-      title: 'Open a Codex task',
-      message:
-        'Visit https://chatgpt.com/codex/tasks/... and run Codex Helper again. Options has setup help.',
-    });
   }
 }
 
@@ -1087,12 +1078,27 @@ async function saveContentToStorage(content) {
 }
 
 async function getActiveCodexTab() {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  const [tab] = tabs;
-  if (!tab || !tab.id || !tab.url || !tab.url.includes('chatgpt.com/codex/tasks/')) {
+  if (typeof lastCodexTabId !== 'number') {
     return null;
   }
-  return tab;
+
+  try {
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId: lastCodexTabId },
+      func: () => ({ href: window.location.href }),
+    });
+
+    if (!result || !result.result?.href?.includes('chatgpt.com/codex/tasks/')) {
+      lastCodexTabId = null;
+      return null;
+    }
+
+    return { id: lastCodexTabId, url: result.result.href };
+  } catch (error) {
+    console.debug('Unable to resolve last Codex tab', error);
+    lastCodexTabId = null;
+    return null;
+  }
 }
 
 async function collectSummaryFromTab(tabId) {

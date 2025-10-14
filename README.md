@@ -17,6 +17,8 @@ https://github.com/codex-helper/codex-helper/assets/demo.gif
 - ⚙️ Options page for configuring templates and review prompts
 - 📤 Paste helper for ChatGPT so the summary drops straight into a new conversation
 
+See the [privacy policy](./PRIVACY.md) for details on what data stays local.
+
 ## Quick Start
 
 ```bash

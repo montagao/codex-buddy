@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Codex Buddy",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Codex Buddy collects every Version tab on a ChatGPT Codex task page and formats them for gpt-5-pro or gpt-5-thinking review.",
-  "permissions": ["activeTab", "scripting", "clipboardWrite", "tabs", "storage", "notifications"],
+  "permissions": ["activeTab", "scripting", "clipboardWrite", "storage"],
   "host_permissions": ["https://chatgpt.com/codex/tasks/*", "https://chat.openai.com/*"],
   "icons": {
     "16": "icon-16.png",

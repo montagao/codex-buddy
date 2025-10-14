@@ -1,6 +1,6 @@
 {
   "name": "codex-buddy",
-  "version": "0.1.0",
+  "version": "0.1.12",
   "description": "Chrome extension to collect and summarize ChatGPT Codex versions",
   "type": "module",
   "scripts": {
