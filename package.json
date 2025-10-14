@@ -1,0 +1,32 @@
+{
+  "name": "codex-buddy",
+  "version": "0.1.0",
+  "description": "Chrome extension to collect and summarize ChatGPT Codex versions",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.{ts,tsx,js}\" popup-script.js options.js background-simple.js",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md,yml,yaml,html,css}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,tsx,json,md,yml,yaml,html,css}\"",
+    "test": "vitest run",
+    "check": "npm run lint && npm run format:check && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.251",
+    "@vitejs/plugin-basic-ssl": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-chrome-extension": "^0.0.7",
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "xpath-dom": "^0.2.2"
+  }
+}

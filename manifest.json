@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Codex Buddy",
+  "version": "0.1.11",
+  "description": "Codex Buddy collects every Version tab on a ChatGPT Codex task page and formats them for gpt-5-pro or gpt-5-thinking review.",
+  "permissions": ["activeTab", "scripting", "clipboardWrite", "tabs", "storage", "notifications"],
+  "host_permissions": ["https://chatgpt.com/codex/tasks/*", "https://chat.openai.com/*"],
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "action": {
+    "default_title": "Codex Buddy",
+    "default_icon": {
+      "16": "icon-16.png",
+      "32": "icon-32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background-simple.js",
+    "type": "module"
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/brand-mark.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/codex/tasks/*"],
+      "js": ["src/content.ts"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://chat.openai.com/*"],
+      "js": ["src/paste.ts"],
+      "run_at": "document_idle"
+    }
+  ]
+}

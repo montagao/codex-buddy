@@ -1,0 +1,513 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Codex Buddy</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --surface: #f5f3ed;
+        --surface-elevated: rgba(255, 255, 255, 0.9);
+        --surface-line: rgba(17, 23, 31, 0.08);
+        --surface-strong-line: rgba(17, 23, 31, 0.14);
+        --text-strong: #111822;
+        --text-muted: rgba(17, 24, 36, 0.62);
+        --text-subtle: rgba(17, 24, 36, 0.48);
+        --accent: #1f5243;
+        --accent-soft: rgba(31, 82, 67, 0.08);
+        --radius: 18px;
+        --shadow-soft: 0 18px 32px rgba(17, 23, 31, 0.08);
+        --shadow-card: inset 0 0 0 1px rgba(255, 255, 255, 0.4), 0 10px 20px rgba(17, 23, 31, 0.06);
+        --shadow-input:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.24), 0 12px 24px rgba(17, 23, 31, 0.06);
+        --transition: 160ms ease;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          'SF Pro Display',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        background: #f3f1eb;
+        color: var(--text-strong);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        line-height: 1.5;
+      }
+
+      .popup-shell {
+        width: min(520px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 28px 30px;
+        background: var(--surface-elevated);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--surface-line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header {
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .brand-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: linear-gradient(140deg, rgba(31, 82, 67, 0.12), rgba(31, 82, 67, 0));
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--surface-line);
+      }
+
+      .brand-icon img {
+        width: 28px;
+        height: 28px;
+      }
+
+      h1 {
+        font-size: 24px;
+        letter-spacing: 0.01em;
+        margin: 0;
+      }
+
+      .tagline {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: var(--text-subtle);
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid var(--surface-line);
+        border-radius: calc(var(--radius) - 4px);
+        padding: 18px 20px;
+        display: flex;
+        gap: 12px;
+        box-shadow: var(--shadow-card);
+      }
+
+      .content-card {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .content-card .card-content {
+        width: 100%;
+        gap: 12px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .card-icon {
+        width: 32px;
+        height: 32px;
+        flex: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(47, 79, 64, 0.14), rgba(47, 79, 64, 0));
+        display: grid;
+        place-items: center;
+      }
+
+      .card-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--accent);
+      }
+
+      .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .card-content strong {
+        font-size: 15px;
+        letter-spacing: 0.01em;
+      }
+
+      .card-content p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .instructions-body {
+        color: var(--text-muted);
+      }
+
+      .summary-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .summary-header .summary-caption {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0.02em;
+        color: var(--text-subtle);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 180px;
+        font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', monospace;
+        font-size: 13.5px;
+        line-height: 1.7;
+        padding: 18px 20px;
+        border: 1px solid var(--surface-strong-line);
+        border-radius: calc(var(--radius) - 6px);
+        background: linear-gradient(180deg, rgba(248, 247, 244, 0.96), rgba(243, 241, 236, 0.92));
+        color: var(--text-strong);
+        resize: vertical;
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          transform var(--transition);
+        box-shadow: var(--shadow-input);
+        white-space: pre-wrap;
+        max-height: 60vh;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: rgba(31, 82, 67, 0.5);
+        box-shadow:
+          0 0 0 4px rgba(31, 82, 67, 0.1),
+          var(--shadow-input);
+        transform: translateY(-1px);
+      }
+
+      textarea:hover {
+        border-color: rgba(31, 82, 67, 0.34);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: space-between;
+        margin-top: auto;
+      }
+
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        background: linear-gradient(135deg, rgba(31, 82, 67, 0.92), rgba(31, 82, 67, 0.76));
+        color: #fff;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          background var(--transition),
+          border-color var(--transition);
+        min-width: 0;
+      }
+
+      button svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 1.6;
+        flex: none;
+      }
+
+      button.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(17, 23, 31, 0.16);
+      }
+
+      button.subtle {
+        background: rgba(255, 255, 255, 0.52);
+        color: var(--text-strong);
+        border: 1px solid var(--surface-line);
+      }
+
+      button.subtle:hover {
+        border-color: rgba(31, 82, 67, 0.3);
+        background: rgba(31, 82, 67, 0.08);
+      }
+
+      button.ghost {
+        background: rgba(31, 82, 67, 0.1);
+        color: var(--accent);
+        border: 1px solid rgba(31, 82, 67, 0.2);
+      }
+
+      button.ghost:hover {
+        background: rgba(31, 82, 67, 0.16);
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(31, 82, 67, 0.18);
+      }
+
+      .status {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--surface-line);
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .status svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+      }
+
+      .status-success {
+        color: var(--accent);
+        background: rgba(47, 79, 64, 0.08);
+        border-color: rgba(47, 79, 64, 0.15);
+      }
+
+      .status-success svg {
+        stroke: var(--accent);
+      }
+
+      .status-error {
+        color: #8a2d2a;
+        background: rgba(138, 45, 42, 0.08);
+        border-color: rgba(138, 45, 42, 0.2);
+        align-self: stretch;
+      }
+
+      .status-error svg {
+        stroke: #8a2d2a;
+      }
+
+      .status-working {
+        color: var(--text-muted);
+        background: rgba(26, 31, 36, 0.04);
+        border-color: rgba(26, 31, 36, 0.08);
+      }
+
+      .status-working .spinner {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 2px solid rgba(26, 31, 36, 0.12);
+        border-top-color: rgba(26, 31, 36, 0.8);
+        animation: spin 760ms linear infinite;
+      }
+
+      .status.is-visible {
+        display: inline-flex;
+      }
+
+      #copySuccess {
+        align-self: flex-end;
+      }
+
+      .made-by {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--accent);
+        align-self: center;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+      }
+
+      .made-by:hover,
+      .made-by:focus-visible {
+        text-decoration: underline;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 520px) {
+        body {
+          padding: 16px;
+        }
+
+        .popup-shell {
+          padding: 22px;
+          gap: 16px;
+        }
+
+        textarea {
+          min-height: 160px;
+          font-size: 13px;
+        }
+
+        .summary-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 6px;
+        }
+
+        button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .button-group {
+          width: 100%;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-shell">
+      <header class="header">
+        <div class="brand-icon" aria-hidden="true">
+          <img src="assets/brand-mark.svg" alt="" />
+        </div>
+        <div>
+          <h1>Codex Buddy</h1>
+          <p class="tagline">Refine your review narrative with calm precision.</p>
+        </div>
+      </header>
+
+      <section class="card instructions" aria-labelledby="instructions-title">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M12 8.5v.01" stroke-linecap="round" />
+            <path d="M11.5 11h1v5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="card-content">
+          <strong id="instructions-title">How to use</strong>
+          <p class="instructions-body" id="instructions-body">
+            The curated summary below is ready for ChatGPT gpt-5-pro or gpt-5-thinking. Copy it with one tap or open
+            gpt-5-pro directly to begin your session.<br /><strong>Note:</strong> Keep this window at least 800px
+            wide for this to work.
+          </p>
+        </div>
+      </section>
+
+      <div
+        class="status status-working is-visible"
+        id="loadingState"
+        role="status"
+        aria-live="polite"
+      >
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Preparing summary…</span>
+      </div>
+
+      <section class="card content-card">
+        <div class="card-content">
+          <label class="summary-header" for="content">
+            <span>Summary</span>
+            <span class="summary-caption">Review, edit, or export</span>
+          </label>
+          <textarea id="content" readonly>Loading...</textarea>
+        </div>
+      </section>
+
+      <div class="actions">
+        <div class="button-group">
+          <button id="copyBtn" class="primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M15 3H5a2 2 0 0 0-2 2v10" stroke-linecap="round" />
+              <rect x="7" y="7" width="14" height="14" rx="2" ry="2" />
+            </svg>
+            <span>Copy Summary</span>
+          </button>
+          <button id="chatgptBtn" class="subtle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14" stroke-linecap="round" />
+              <path d="M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Open gpt-5-pro</span>
+          </button>
+        </div>
+        <button id="overlayBtn" class="ghost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="4" y="5" width="16" height="14" rx="3" />
+            <path d="M8 9h8M8 13h3" stroke-linecap="round" />
+          </svg>
+          <span>Full View</span>
+        </button>
+      </div>
+
+      <div class="status status-error" id="errorState" role="alert">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 7v6" stroke-linecap="round" />
+          <circle cx="12" cy="16.5" r="1" />
+          <circle cx="12" cy="12" r="8.5" />
+        </svg>
+        <span id="errorMessage">Unable to collect summary.</span>
+      </div>
+
+      <div class="status status-success" id="copySuccess" role="status" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Copied to clipboard</span>
+      </div>
+      <a class="made-by" href="https://x.com/montakaoh" target="_blank" rel="noopener noreferrer"
+        >made with 🤖 by @montakaoh</a
+      >
+    </div>
+    <script src="popup-script.js"></script>
+  </body>
+</html>

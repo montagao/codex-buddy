@@ -1,0 +1,50 @@
+---
+name: Bug report
+description: Report a problem with the Codex Helper extension
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve Codex Helper! Provide as much detail as you can so we can reproduce the issue.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+      placeholder: Clipboard copy fails on Codex review page
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include links, screenshots, or logs if relevant.
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: Describe what you expected to happen.
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: Describe what actually happened. Include errors or console output if possible.
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: Find this in the extension options footer.
+      placeholder: 0.1.7
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & version
+      placeholder: Chrome 129.0.0.0 on macOS 14.6
+*** End Patch

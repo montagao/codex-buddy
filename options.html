@@ -1,0 +1,408 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Codex Buddy Preferences</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --surface: #f5f3ed;
+        --surface-strong: rgba(255, 255, 255, 0.88);
+        --surface-muted: rgba(255, 255, 255, 0.72);
+        --stroke: rgba(17, 23, 31, 0.1);
+        --stroke-strong: rgba(17, 23, 31, 0.16);
+        --text-strong: #111822;
+        --text-muted: rgba(17, 24, 36, 0.62);
+        --text-subtle: rgba(17, 24, 36, 0.5);
+        --accent: #1f5243;
+        --accent-soft: rgba(31, 82, 67, 0.08);
+        --radius: 20px;
+        --transition: 160ms ease;
+        --shadow-shell: 0 22px 44px rgba(17, 23, 31, 0.12);
+        --shadow-card: 0 16px 28px rgba(17, 23, 31, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          'SF Pro Display',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        background: radial-gradient(
+          circle at 18% -10%,
+          #fefdf9 0%,
+          var(--surface) 42%,
+          #ebe9e1 96%
+        );
+        color: var(--text-strong);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 48px 20px;
+      }
+
+      .options-shell {
+        width: min(640px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 34px 36px;
+        background: var(--surface-strong);
+        backdrop-filter: blur(18px);
+        border: 1px solid var(--stroke);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-shell);
+      }
+
+      .options-header h1 {
+        margin: 0;
+        font-size: 26px;
+        letter-spacing: 0.01em;
+      }
+
+      .options-header p {
+        margin: 10px 0 0;
+        font-size: 15px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .options-section {
+        background: var(--surface-muted);
+        border: 1px solid rgba(17, 23, 31, 0.08);
+        border-radius: calc(var(--radius) - 4px);
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        box-shadow: var(--shadow-card);
+      }
+
+      .options-section h2 {
+        margin: 0;
+        font-size: 17px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-subtle);
+      }
+
+      .option-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text-strong);
+      }
+
+      .checkbox-label input[type='checkbox'] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        border: 1.5px solid rgba(31, 41, 51, 0.2);
+        transition:
+          background var(--transition),
+          border-color var(--transition);
+        display: grid;
+        place-items: center;
+      }
+
+      .checkbox-label input[type='checkbox']::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        border-radius: 4px;
+        background: transparent;
+        transition: background var(--transition);
+      }
+
+      .checkbox-label input[type='checkbox']:checked {
+        border-color: rgba(31, 82, 67, 0.4);
+        background: rgba(31, 82, 67, 0.15);
+      }
+
+      .checkbox-label input[type='checkbox']:checked::after {
+        background: var(--accent);
+      }
+
+      .description {
+        font-size: 13px;
+        color: var(--text-muted);
+        padding-left: 32px;
+        line-height: 1.5;
+      }
+
+      .section-hint {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin: -10px 0 6px;
+        line-height: 1.5;
+      }
+
+      .field-label {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-subtle);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        border-radius: 16px;
+        border: 1px solid var(--stroke-strong);
+        padding: 18px 20px;
+        font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        resize: vertical;
+        color: var(--text-strong);
+        background: rgba(255, 255, 255, 0.9);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          transform var(--transition);
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: rgba(31, 82, 67, 0.5);
+        box-shadow: 0 0 0 4px rgba(31, 82, 67, 0.12);
+        transform: translateY(-1px);
+      }
+
+      textarea::placeholder {
+        color: rgba(17, 24, 36, 0.35);
+      }
+
+      input[type='text'] {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid var(--stroke-strong);
+        padding: 14px 16px;
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--text-strong);
+        background: rgba(255, 255, 255, 0.9);
+        transition:
+          border-color var(--transition),
+          box-shadow var(--transition),
+          transform var(--transition);
+      }
+
+      input[type='text']:focus {
+        outline: none;
+        border-color: rgba(31, 82, 67, 0.5);
+        box-shadow: 0 0 0 4px rgba(31, 82, 67, 0.12);
+        transform: translateY(-1px);
+      }
+
+      input[type='text']::placeholder {
+        color: rgba(17, 24, 36, 0.4);
+      }
+
+      code {
+        font-family: 'SF Mono', ui-monospace, 'JetBrains Mono', monospace;
+        background: rgba(31, 82, 67, 0.12);
+        color: var(--accent);
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 12px;
+      }
+
+      button {
+        align-self: flex-start;
+        margin-top: 6px;
+        padding: 12px 22px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        background: rgba(31, 82, 67, 0.16);
+        color: var(--accent);
+        transition:
+          transform var(--transition),
+          background var(--transition),
+          border-color var(--transition);
+      }
+
+      button:hover {
+        background: rgba(31, 82, 67, 0.22);
+        border-color: rgba(31, 82, 67, 0.32);
+        transform: translateY(-1px);
+      }
+
+      .options-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: var(--text-subtle);
+        gap: 12px;
+      }
+
+      .options-footer .version-value {
+        font-weight: 600;
+        color: var(--text-strong);
+        letter-spacing: 0.04em;
+      }
+
+      .made-by {
+        margin-left: auto;
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .made-by:hover,
+      .made-by:focus-visible {
+        text-decoration: underline;
+      }
+
+      .save-status {
+        position: fixed;
+        left: 50%;
+        bottom: 32px;
+        transform: translateX(-50%);
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: rgba(31, 82, 67, 0.92);
+        color: #fff;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease;
+        box-shadow: 0 16px 32px rgba(17, 23, 31, 0.18);
+      }
+
+      .save-status.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-4px);
+      }
+
+      .save-status svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 32px 12px;
+        }
+
+        .options-shell {
+          padding: 28px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="options-shell">
+      <header class="options-header">
+        <h1>Codex Buddy Preferences</h1>
+        <p>Tune how Codex collects versions and composes the PR review summary.</p>
+      </header>
+
+      <section class="options-section">
+        <h2>Collection</h2>
+        <div class="option-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="currentVersionOnly" />
+            <span>Scrape current version only</span>
+          </label>
+          <p class="description">
+            Skip iterating through every version tab and capture only the visible Codex version.
+          </p>
+        </div>
+      </section>
+
+      <section class="options-section">
+        <h2>Content</h2>
+        <div class="option-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeReviewQuestions" checked />
+            <span>Include review questions</span>
+          </label>
+          <p class="description">
+            Append the follow-up questions that help guide your final Codex review.
+          </p>
+        </div>
+      </section>
+
+      <section class="options-section">
+        <h2>Summary Template</h2>
+        <p class="section-hint">
+          Use <code>{{totalVersions}}</code> and <code>{{totalFiles}}</code> to reference the
+          collected counts inside your markdown.
+        </p>
+        <label class="field-label" for="summaryTemplate">Full summary template</label>
+        <textarea
+          id="summaryTemplate"
+          spellcheck="false"
+          placeholder="# Codex Buddy Review Summary&#10;&#10;Collected {{totalVersions}} PR versions with {{totalFiles}} total file changes"
+        ></textarea>
+
+        <label class="field-label" for="summariesOnlyTemplate">Summaries-only template</label>
+        <textarea
+          id="summariesOnlyTemplate"
+          spellcheck="false"
+          placeholder="# Codex Buddy Summaries&#10;&#10;Collected {{totalVersions}} PR versions"
+        ></textarea>
+
+        <label class="field-label" for="reviewHeading">Review heading</label>
+        <input id="reviewHeading" type="text" placeholder="Review Questions" spellcheck="false" />
+
+        <label class="field-label" for="reviewQuestions">Review questions (one per line)</label>
+        <textarea
+          id="reviewQuestions"
+          spellcheck="false"
+          placeholder="Which of these PRs solves the task at hand the best and why?&#10;What additional inputs or BLOCKERS do you foresee?&#10;Are there any potential issues or improvements to consider?"
+        ></textarea>
+      </section>
+
+      <button id="resetDefaults" type="button">Reset to defaults</button>
+
+      <footer class="options-footer">
+        <span class="version-label">Version</span>
+        <span class="version-value" id="extensionVersion">—</span>
+        <a class="made-by" href="https://x.com/montakaoh" target="_blank" rel="noopener noreferrer"
+          >made with 🤖 by @montakaoh</a
+        >
+      </footer>
+    </div>
+
+    <div class="save-status" id="saveStatus">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span>Settings saved</span>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>
