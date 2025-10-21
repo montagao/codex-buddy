@@ -7,7 +7,6 @@ Codex Buddy is a Chrome extension that collects every “Version” tab on a Cha
 
 ![Codex Buddy overlay](./screenshot.png)
 
-https://github.com/codex-helper/codex-helper/assets/demo.gif
 
 ## Features
 
